@@ -16,16 +16,19 @@ if (not file_exists):
 def settext(text):
     TextActivity.set(text)
 
+#Button state control for when clocked on
 def ClockedOn():
     clk_on["state"] = "disabled"
     clk_off["state"] = "normal"
     switch_btn["state"] = "normal"
 
+#Button state control for when clocked off
 def ClockedOff():
     clk_off["state"] = "disabled"
     switch_btn["state"] = "disabled"
     clk_on["state"] = "normal"
-    
+
+#Clock on and write to TimeLog.txt
 def clock_on():
     Name = get_name.get().upper()
     Activity = text_input.get().upper()
@@ -39,6 +42,7 @@ def clock_on():
     else:
         settext("Please enter an Activity")
 
+#Clock off and write to TimeLog.txt
 def clock_off():
     Name = get_name.get().upper()
     FullHistory = user_history(Name, "f")
@@ -56,6 +60,7 @@ def switch():
     clock_off()
     clock_on()
 
+#Get history from TimeLog.txt
 def user_history(name, mode):
     f = open("TimeLog.txt", "r")
     lines = f.read().splitlines()
@@ -72,6 +77,7 @@ def user_history(name, mode):
     elif (mode == "f"):
         return lines
     
+#Get current activity from user_history
 def get_current(name):
     current = user_history(name, "s")
 
@@ -84,18 +90,21 @@ def get_current(name):
     else:
         return("ClockedOff")
 
-def next_action(HowClocked, Name):
+#Set the next action based on current action
+def next_action(HowClocked, name):
     if (HowClocked == "ClockedOn"):
         ClockedOn()
         
     elif (HowClocked == "ClockedOff"):
         ClockedOff()
 
+#Write list to Timelog.txt
 def write_list_to_file(FullList):
     with open("TimeLog.txt", 'w') as FileHandle:
         for ListItem in FullList:
             FileHandle.write('%s\n' % ListItem)
 
+#Initial setup for user
 def start():
     name = get_name.get().upper()
     current = get_current(name)
@@ -141,6 +150,7 @@ switch_btn.grid(row=i+3, column=3)
 exit_btn = Button(root, text="Exit", command=quit)
 exit_btn.grid(row=i+4, column=1, columnspan=3)
 
+#Shortcut to enter name
 name_btn = Button(root, text="Name", command=lambda:set_text("Peter"))
 name_btn.grid(row=i+4, column=1, columnspan=1)
 
